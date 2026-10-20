@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+.env.local
+*.db
+*.sqlite
+node_modules/
+.next/
+.vercel/
+.firebase/
+.DS_Store
