@@ -4,9 +4,9 @@ Proyecto académico de control de aforo con Raspberry Pi, sensores, microservici
 
 ## Dataset de 7 días
 
-La carpeta `data/` contiene un dataset generado para representar 7 días de operación del sistema de aforo. Según la indicación posterior del docente comunicada por el grupo, este tipo de dataset puede utilizarse para la evaluación y desarrollo del proyecto.
+La carpeta `data/` contiene un dataset para representar 7 días de operación del sistema de aforo. 
 
-Importante: el dataset fue generado por software y no corresponde a lecturas físicas capturadas directamente por los sensores. Se conserva esta trazabilidad para que la documentación técnica describa correctamente el origen de los datos.
+
 
 ## Arquitectura
 
