@@ -1,0 +1,62 @@
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+    healthcheck:
+      test: ["CMD-SHELL","mosquitto_sub -h localhost -t '$$SYS/broker/uptime' -C 1 -W 3 >/dev/null 2>&1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  pir-service:
+    build:
+      context: .
+      dockerfile: pir-service/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+
+  ultrasonic-service:
+    build:
+      context: .
+      dockerfile: ultrasonic-service/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+
+  occupancy-service:
+    build:
+      context: .
+      dockerfile: occupancy-service/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+
+  sync-service:
+    build:
+      context: .
+      dockerfile: sync-service/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    volumes:
+      - sync-data:/data
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+
+volumes:
+  mosquitto-data:
+  sync-data:
